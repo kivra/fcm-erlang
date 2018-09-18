@@ -18,32 +18,38 @@ Using `fcm-erlang` you can:
 
 ### How to compile:
 
-`fcm-erlang` user `erlang.mk` as make system. To compile
+To compile
 
-    $ make
+    $ rebar3 compile
     
 To generate release
 
-    $ make rel
+    $ rebar3 release
     
-### How to use with rebar:
+### How to add fcm as a dependency
 
-You can use fcm_app as a dependency in your rebar.config:
+In your rebar.config:
 
     {deps , [
         {fcm, ".*", {git, "https://github.com/softwarejoint/fcm-erlang.git", {tag, "1.0.1"}}}
     ]}.
 
-### How to run the application fcm-erlang:
+### How to run the application:
 
-`make rel` will create a release under `_rel/fcm` directory. 
+`rebar3 release` will create a release under `_build/default/rel/fcm/` directory.
 
-    $ cd _rel/fcm
-    $ bin/fcm console
+    $ cd _build/default/rel/fcm/
+    $ ./bin/fcm console
+
+Another way to run it:
+
+    $ rebar3 shell --apps fcm
 
 ### How to start/stop different gen_servers under application fcm-erlang (one for each FCM application):
 
-While `fcm-erlang` is running you can start several supervised gen_servers, one for each FCM application. Every gen_server is defined by an atom used internally for registration and by a `FCM API key`.
+While `fcm-erlang` is running you can start several supervised gen_servers, one
+for each FCM application. Every gen_server is defined by an atom used
+internally for registration and by a `FCM API key`.
 
     3> fcm:start(foo, "myapikey").
     {ok,<0.60.0>}
@@ -69,10 +75,10 @@ Where
  
 	* `RegistereName` is the atom used during registration
 	* `RegId` is Registration Id specified as Erlang binary (e.g., `<<"APA91bHun4MxP5egoKMwt2KZFBaFUH-1RYqx...">>`)
-	* `RegIds` is a list (max 1000 elements) of `RegId`	* `Message` is an Erlang Map or TupleList representing the data you want to send to the device.
+	* `RegIds` is a list (max 1000 elements) of `RegId`
+        * `Message` is an Erlang Map or TupleList representing the data you want to send to the device.
 
 In order to understand `Message` payload see [Message Syntax](https://firebase.google.com/docs/cloud-messaging/http-server-ref#send-downstream).
-
 
 The JSON message is built using `jsx` in the module `fcm.erl` and in the end will have the following form:
 
