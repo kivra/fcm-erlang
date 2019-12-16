@@ -8,7 +8,7 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
--export([push/3, push/4, sync_push/3, sync_push/4]).
+-export([push/3, push/4, sync_push/3, sync_push/4, sync_push/5]).
 
 -define(SERVER, ?MODULE).
 -define(RETRY, 3).
@@ -32,6 +32,9 @@ sync_push(Name, RegIds, Message) ->
 
 sync_push(Name, RegIds, Message, Retry) ->
     gen_server:call(Name, {send, RegIds, Message, Retry}).
+
+sync_push(Name, RegIds, Message, Retry, Timeout) ->
+    gen_server:call(Name, {send, RegIds, Message, Retry}, Timeout).
 
 %% OTP
 start_link(Name, Key) ->
